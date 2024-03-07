@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import Papa from "papaparse";
 import { toast } from "react-toastify";
 
-export const errorSweetAlert = (title, text, confirmBtnText, action) => {
+export const errorSweetAlert = (title, text, confirmBtnText, action,isCancelBtn) => {
   const customizedWarningSweetAlert = Swal.mixin({
     customClass: {
       header: "custom-sweet-alert-header",
@@ -18,10 +18,10 @@ export const errorSweetAlert = (title, text, confirmBtnText, action) => {
 
   customizedWarningSweetAlert
     .fire({
-      icon: "error",
+      icon: isCancelBtn ? null : "error",
       title: title ? title : null,
       text: text ? text : null,
-      showCancelButton: false,
+      showCancelButton: isCancelBtn ? isCancelBtn : false,
       confirmButtonText: confirmBtnText,
       reverseButtons: false,
     })

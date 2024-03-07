@@ -50,7 +50,10 @@ const ResetPassword = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const uid = searchParams.get('uid');
     if(uid) {
-     await checkUserTokenForResetPassword({"token":uid}).then((res) => {
+      let ob = {
+        token : uid
+      }
+     await checkUserTokenForResetPassword(ob).then((res) => {
         if(res.success) {
           setToken(uid);
         } else {
@@ -71,12 +74,14 @@ const ResetPassword = () => {
     if(confirmPassword.trim() === "") return notifyMessage("Please enter your confirm password!",3);
     if(confirmPassword.trim() !== password.trim()) return notifyMessage("Doesn't match your password",3);
 
-    if(token) {
+    console.log("ADO",token)
+
+    // if(token) {
         const obj = {
           token : token,
           password : password.trim()
         }
-      resetUserPassword(obj).then((res) => {
+     await resetUserPassword(obj).then((res) => {
         console.log(res)
         if(res.success){
           notifyMessage(res.message,1)
@@ -86,7 +91,7 @@ const ResetPassword = () => {
         }
       })
 
-    }
+    // }
 
   }
 

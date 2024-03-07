@@ -136,7 +136,7 @@ const HorizontalLayout = (props) => {
               <NavItem>
                 <Link to={BASE_ROUTE_PATH} className="navbar-brand">
                   <span className="brand-logo">
-                    <img src={themeConfig.app.appLogoImage} alt="logo" />
+                    ABC - Laboratory
                   </span>
                   <h2 className="brand-text mb-0">{themeConfig.app.appName}</h2>
                 </Link>

@@ -1,13 +1,13 @@
 // Logo Import
-import logo from "@src/assets/images/logo/cen-logo.png";
+
 
 // You can customize the template with the help of this file
 
 //Template config options
 const themeConfig = {
   app: {
-    appName: "Planner - Admin",
-    appLogoImage: logo,
+    appName: "ABC Laboratory",
+    appLogoImage: '',
   },
   layout: {
     isRTL: false,

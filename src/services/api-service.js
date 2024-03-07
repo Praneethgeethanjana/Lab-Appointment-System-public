@@ -5,6 +5,7 @@ import * as constant from "../configs/constant";
 import * as qs from "qs";
 import AuthService from "./auth";
 import { errorSweetAlert } from "../utility/commun-func";
+import { ROLE_ADMIN, ROLE_PATIENT } from "../configs/constant";
 async function callApi(apiObject) {
   let body = {};
   let headers;
@@ -26,8 +27,11 @@ async function callApi(apiObject) {
       constant.ACCESS_TOKEN
     )}`;
   }
-  if (apiObject.type === "AUTH" || apiObject.type === "RENEW_TOKEN") {
-    headers.Authorization = `Basic ${constant.SECRET_KEY}`;
+  if (apiObject.type === "AUTH") {
+    headers.Authorization = `Basic ${apiObject.isAdmin ? constant.ADMIN_SECRET_KEY : constant.SECRET_KEY}`;
+  }
+  if (apiObject.type === "RENEW_TOKEN") {
+    headers.Authorization = `Basic ${constant.USER_ROLE === ROLE_ADMIN ? constant.ADMIN_SECRET_KEY : constant.SECRET_KEY}`;
   }
 
   let serverUrl = apiConfig.serverUrl;

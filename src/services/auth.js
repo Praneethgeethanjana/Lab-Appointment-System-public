@@ -12,7 +12,7 @@ export async function adminLogin(obj) {
   return await ApiService.callApi(apiObject);
 }
 
-export async function userLogin(obj) {
+export async function userLogin(obj,isAdmin) {
   const apiObject = {};
   apiObject.method = "POST";
   apiObject.authentication = false;
@@ -20,6 +20,7 @@ export async function userLogin(obj) {
   apiObject.basePath = "v1/oauth";
   apiObject.urlencoded = true;
   apiObject.type = "AUTH";
+  apiObject.isAdmin = isAdmin;
   apiObject.body = obj;
   return await ApiService.callApi(apiObject);
 }

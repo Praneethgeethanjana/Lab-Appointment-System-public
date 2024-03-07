@@ -532,3 +532,27 @@ table {
 .multi-dropdown{
   height: auto!important;
 }
+
+.py-5px{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.b-r-l-rounded{
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.b-r-r-rounded{
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+#swal2-title{
+  margin-top: 10px!important;
+}
+.swal2-cancel{
+  margin-left: 10px!important;
+  border: 1px solid gray;
+  &:hover{
+    border: 1px solid gray;
+  }
+}

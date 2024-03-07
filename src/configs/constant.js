@@ -1,11 +1,8 @@
 export const ACCESS_TOKEN = "Y2VuLXBsYW5uZXItYWRtaW4tYWNjZXNzLXRva2Vu";
 export const REFRESH_TOKEN = "Y2VuLXBsYW5uZXItYWRtaW4tcmVmcmVzaC10b2tlbg==";
 export const SECRET_KEY = "dXNlcjo=";
+export const ADMIN_SECRET_KEY = "YWRtaW46";
 export const REFRESH_SECRET_KEY = "Y2V5ZW50cmE6";
-
-
-
-
 
 export const SERVER_URL = "https://api.aise.lk/api";
 
@@ -27,15 +24,5 @@ export const APPOINTMENTS_ROUTE = BASE_ROUTE_PATH + "appointments";
 export const APPOINTMENT_HISTORY_ROUTE = BASE_ROUTE_PATH + "appointment-history";
 export const REPORTS_ROUTE = BASE_ROUTE_PATH + "test-reports";
 export const PATIENTS_ROUTE = BASE_ROUTE_PATH + "patients";
-
 export const CHANGE_PASSWORD_ROUTE = BASE_ROUTE_PATH + "change-password";
-
-//Chat Details
-
-export const GOOGLE_API_KEY = "";
-
-
 export const SOMETHING_WENT_WRONG_MSG = "Something went wrong";
-
-export const FRONTEND_URL = "";
-// export const FRONTEND_URL = LOCALHOST_URLL ;
