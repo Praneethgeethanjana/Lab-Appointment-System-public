@@ -8,7 +8,8 @@ import { notifyMessage } from "@src/utility/commun-func";
 import { getMedicalTests } from "@src/services/statistics";
 import Flatpickr from "react-flatpickr";
 import { createAppointment } from "@src/services/appointment";
-const DriverManage = ({ driver, closeModal, updateHandler }) => {
+import Loader from "@components/spinner/Loader";
+const DriverManage = ({  closeModal, updateHandler }) => {
   const [data, setData] = useState({});
   const [tests, setTests] = useState([]);
   const [selectedTests, setSelectedTests] = useState([]);
@@ -60,6 +61,7 @@ const DriverManage = ({ driver, closeModal, updateHandler }) => {
       return notifyMessage("Please upload payment slip", 0);
 
 
+    setLoading(true)
     const resultSelectedTests = selectedTests.join(',');
 
     const formData = new FormData();
@@ -71,15 +73,15 @@ const DriverManage = ({ driver, closeModal, updateHandler }) => {
 
 
 
-    createAppointment(formData).then((res) => {
+   await createAppointment(formData).then((res) => {
       if(res.success) {
         notifyMessage(res.message,1)
-        closeModal();
         if(updateHandler) updateHandler();
+        closeModal();
       } else {
         notifyMessage(res.message,0)
       }
-    });
+    }).finally(()=> {setLoading(false)});
   };
 
 
@@ -97,85 +99,89 @@ const DriverManage = ({ driver, closeModal, updateHandler }) => {
 
 
   return (
-    <div className="manage-form">
-      <Row>
-        <Col md={12}>
-          <div className={"text-wrapper tile-wrapper"}>
-            <Label className={"required font-small-4"}>Select Medical Test Type</Label>
-            <Dropdown
-              disabled={false}
-              placeholder="Type"
-              className={"multi-dropdown"}
-              fluid
-              selection
-              multiple
-              search={false}
-              onChange={(e, { value }) => {
-               console.log('test value',value)
-                setSelectedTests(value)
-              }}
-              value={selectedTests}
-              options={tests}
-              selectOnBlur={false}
-            />
-          </div>
-        </Col>
-        <Col md={4}>
-          <div className={"text-wrapper tile-wrapper mt-1"}>
-            <Label className={"required font-small-4"}>Preferred Date</Label>
-            <Flatpickr
-              options={{
-                mode: "single",
-                maxDate: moment().add(3, "months").toDate(),
-                minDate: new Date(),
-                dateFormat: 'Y/m/d',
-              }}
-              className="form-control selected-date"
-              placeholder={""}
-              value={liveDate ? liveDate : selectedDate}
-              onChange={(date) => {
-                setLiveDate(date);
-                setSelectedDate([moment(date[0]).format("YYYY/MM/DD")]);
-              }}
-            />
-          </div>
-        </Col>
-        <Col md={4}>
-          <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
-            <Label className={"required font-small-4"}>Payment Slip</Label>
-            <Input type="file" onChange={(e) => {handleFileChange(e,'payment')}}/>
-          </div>
-        </Col>
+  <>
+    {loading ? <Loader/> :
+      <div className="manage-form">
+        <Row>
+          <Col md={12}>
+            <div className={"text-wrapper tile-wrapper"}>
+              <Label className={"required font-small-4"}>Select Medical Test Type</Label>
+              <Dropdown
+                disabled={false}
+                placeholder="Type"
+                className={"multi-dropdown"}
+                fluid
+                selection
+                multiple
+                search={false}
+                onChange={(e, { value }) => {
+                  console.log('test value',value)
+                  setSelectedTests(value)
+                }}
+                value={selectedTests}
+                options={tests}
+                selectOnBlur={false}
+              />
+            </div>
+          </Col>
+          <Col md={4}>
+            <div className={"text-wrapper tile-wrapper mt-1"}>
+              <Label className={"required font-small-4"}>Preferred Date</Label>
+              <Flatpickr
+                options={{
+                  mode: "single",
+                  maxDate: moment().add(3, "months").toDate(),
+                  minDate: new Date(),
+                  dateFormat: 'Y/m/d',
+                }}
+                className="form-control selected-date"
+                placeholder={""}
+                value={liveDate ? liveDate : selectedDate}
+                onChange={(date) => {
+                  setLiveDate(date);
+                  setSelectedDate([moment(date[0]).format("YYYY/MM/DD")]);
+                }}
+              />
+            </div>
+          </Col>
+          <Col md={4}>
+            <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
+              <Label className={"required font-small-4"}>Payment Slip</Label>
+              <Input type="file" onChange={(e) => {handleFileChange(e,'payment')}}/>
+            </div>
+          </Col>
 
-        <Col md={4}>
-          {/*{!loading && (*/}
-          <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
-            <Label className={" font-small-4"}>Doctor Receipt</Label>
-            <Input type="file" onChange={handleFileChange} />
-          </div>
-          {/*)}*/}
-        </Col>
+          <Col md={4}>
+            {/*{!loading && (*/}
+            <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
+              <Label className={" font-small-4"}>Doctor Receipt</Label>
+              <Input type="file" onChange={handleFileChange} />
+            </div>
+            {/*)}*/}
+          </Col>
 
-        <Col md={12}>
-          <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
-            <Label className={" font-small-4"}>Note</Label>
-            <Input onChange={(e) => {setNote(e.target.value)}} style={{minHeight: '100px' }} type="textarea" />
-          </div>
-        </Col>
+          <Col md={12}>
+            <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
+              <Label className={" font-small-4"}>Note</Label>
+              <Input onChange={(e) => {setNote(e.target.value)}} style={{minHeight: '100px' }} type="textarea" />
+            </div>
+          </Col>
 
-      </Row>
+        </Row>
 
-      <div className="d-flex justify-content-end">
-        {" "}
-        <button
-          disabled={apiLoader}
-          className="btn btn-primary mt-3"
-          onClick={manageHandler}
-        >
-          Create Appointment
-        </button>
+        <div className="d-flex justify-content-end">
+
+          <button
+            disabled={apiLoader}
+            className="btn btn-primary mt-3"
+            onClick={manageHandler}
+          >
+            Create Appointment
+          </button>
+        </div>
       </div>
-    </div>
+    }
+  </>
   );
 };
 

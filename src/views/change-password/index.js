@@ -1,16 +1,11 @@
 // ** React Imports
 import { useSkin } from "@hooks/useSkin";
 
-// ** Icons Imports
-// ** Custom Components
+
 import InputPasswordToggle from "@components/input-password-toggle";
 
-// ** Reactstrap Imports
-import { Button, Col, Form, Label, Row } from "reactstrap";
 
-// ** Illustrations Imports
-import illustrationsLight from "@src/assets/images/logo/cen-logo.png";
-import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg";
+import { Button, Col, Form, Label, Row } from "reactstrap";
 
 // ** Styles
 import "@styles/react/pages/page-authentication.scss";
@@ -25,7 +20,7 @@ const ChangePassword = () => {
   const { skin } = useSkin();
   const formRef = useRef();
 
-  const source = skin === "dark" ? illustrationsDark : illustrationsLight;
+
 
   const updateHandler = async (e) => {
     e.preventDefault();
