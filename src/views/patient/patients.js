@@ -71,31 +71,31 @@ const Patients = () => {
                   <Input placeholder={'Search by patient'}  onChange={(e)=> {setKeyword(e.target.value)}} />
                 </div>
               </Col>
-              <Col xs={12} sm={6} md={3}>
-                <div className="px-0 px-sm-2">
-                  <p className="mb-0">Status</p>
-                  <Dropdown
-                    disabled={false}
-                    placeholder=""
-                    className={"form-control"}
-                    fluid
-                    selection
-                    search={false}
-                    onChange={(e, { value }) => {
-                      setStatus(value);
-                      getAllPatients(null,null,value)
-                    }}
-                    value={status}
-                    options={[
-                      { key: "ALL", text: "ALL", value: "ALL" },
-                      { key: "PENDING", text: "PENDING", value: "PENDING" },
-                      { key: "ACTIVE", text: "ACCEPTED", value: "ACTIVE" },
-                      { key: "REJECTED", text: "REJECTED", value: "REJECTED" },
-                    ]}
-                    selectOnBlur={false}
-                  />
-                </div>
-              </Col>
+              {/*<Col xs={12} sm={6} md={3}>*/}
+              {/*  <div className="px-0 px-sm-2">*/}
+              {/*    <p className="mb-0">Status</p>*/}
+              {/*    <Dropdown*/}
+              {/*      disabled={false}*/}
+              {/*      placeholder=""*/}
+              {/*      className={"form-control"}*/}
+              {/*      fluid*/}
+              {/*      selection*/}
+              {/*      search={false}*/}
+              {/*      onChange={(e, { value }) => {*/}
+              {/*        setStatus(value);*/}
+              {/*        getAllPatients(null,null,value)*/}
+              {/*      }}*/}
+              {/*      value={status}*/}
+              {/*      options={[*/}
+              {/*        { key: "ALL", text: "ALL", value: "ALL" },*/}
+              {/*        { key: "PENDING", text: "PENDING", value: "PENDING" },*/}
+              {/*        { key: "ACTIVE", text: "ACCEPTED", value: "ACTIVE" },*/}
+              {/*        { key: "REJECTED", text: "REJECTED", value: "REJECTED" },*/}
+              {/*      ]}*/}
+              {/*      selectOnBlur={false}*/}
+              {/*    />*/}
+              {/*  </div>*/}
+              {/*</Col>*/}
             </div>
           </Row>
         </Col>

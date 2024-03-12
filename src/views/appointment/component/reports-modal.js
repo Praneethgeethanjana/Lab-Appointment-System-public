@@ -37,6 +37,21 @@ const ReportsModal = ({  closeModal, updateHandler , selectedData , patient}) =>
     })
   }
 
+  const downloadReport = (name, url) => {
+
+    fetch(url).then((response) => {
+      response.blob().then((blob) => {
+
+        const fileURL =
+          window.URL.createObjectURL(blob);
+
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = name;
+        alink.click();
+      });
+    });
+  };
 
 
   const manageHandler = async () => {
@@ -106,6 +121,16 @@ const ReportsModal = ({  closeModal, updateHandler , selectedData , patient}) =>
 
               </div>
             </Col>
+
+            {reportUrl ?
+              <Col md={12}>
+                <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
+                 <div className="mb-1">
+                    <h6 style={{cursor:'pointer',color:'#31c506'}} onClick={()=> {downloadReport(selectedData?.appointmentDetails[0].medicalTest.testName ?? 'Report.pdf',reportUrl)}}>Download Report</h6>
+                  </div>
+
+                </div>
+              </Col> : null}
 
 
 

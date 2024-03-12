@@ -51,7 +51,7 @@ const Register = () => {
       mobile: e.target[7].value ?? "",
       password : e.target[8].value ?? "",
     };
-    if(data.firstName.trim() === "") return notifyMessage("First Name cannot be empty!",3)
+    if(data.firstName.trim() === "") return notifyMessage("First Name cannot be empty!",0)
     if(data.lastName.trim() === "") return notifyMessage("Last Name cannot be empty!",3)
     if(data.userName.trim() === "") return notifyMessage("Email cannot be empty!",3)
     if(data.address.trim() === "") return notifyMessage("Address cannot be empty!",3)
@@ -97,7 +97,7 @@ const Register = () => {
               onSubmit={registerHandler}
             >
               <div className="mb-1">
-                <Label className="form-label" for="register-firstName">
+                <Label className="required form-label" for="register-firstName">
                 FirstName
                 </Label>
                 <Input
@@ -109,7 +109,7 @@ const Register = () => {
               </div>
 
               <div className="mb-1">
-                <Label className="form-label" for="register-lastname">
+                <Label className="form-label required" for="register-lastname">
                 Lastname
                 </Label>
                 <Input
@@ -122,7 +122,7 @@ const Register = () => {
 
 
               <div className="mb-1">
-                <Label className="form-label" for="register-email">
+                <Label className="form-label required" for="register-email">
                   Email
                 </Label>
                 <Input
@@ -145,7 +145,7 @@ const Register = () => {
               </div>
 
               <div className="mb-1">
-                <Label className="form-label" for="register-address">
+                <Label className="form-label required" for="register-address">
                 Address
                 </Label>
                 <Input
@@ -157,7 +157,7 @@ const Register = () => {
               </div>
 
               <div className="mb-1">
-                <Label className="form-label" for="register-dob">
+                <Label className="form-label required" for="register-dob">
                 Date of Birth
                 </Label>
                 <Input
@@ -193,7 +193,7 @@ const Register = () => {
               </div>
 
               <div className="mb-1">
-                <Label className="form-label" for="register-password">
+                <Label className="form-label required" for="register-password">
                   Password
                 </Label>
                 <InputPasswordToggle
