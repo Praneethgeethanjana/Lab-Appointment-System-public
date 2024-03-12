@@ -28,13 +28,13 @@ import {
     navLink: APPOINTMENTS_ROUTE,
     roles:[ROLE_PATIENT,ROLE_ADMIN]
   },
-  {
-    id: "reports",
-    title: "Test Reports",
-    icon: <Activity size={20} />,
-    navLink: REPORTS_ROUTE,
-    roles:[ROLE_PATIENT,ROLE_ADMIN]
-  },
+  // {
+  //   id: "reports",
+  //   title: "Test Reports",
+  //   icon: <Activity size={20} />,
+  //   navLink: REPORTS_ROUTE,
+  //   roles:[ROLE_PATIENT,ROLE_ADMIN]
+  // },
    {
      id: "patients",
      title: "Patients",

@@ -19,10 +19,11 @@ import Loader from "@components/spinner/Loader";
 import moment from "moment/moment";
 import { Checkbox, Dropdown, Form } from "semantic-ui-react";
 import Flatpickr from "react-flatpickr";
-import { Box, Eye, File, Plus } from "react-feather";
+import { Box, CheckSquare, Eye, File, Plus } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import CreateAppointmentModal from "@src/views/appointment/component/create-appointment-modal";
 import { getAppointmentForPatient } from "@src/services/appointment";
+import ReportsModal from "@src/views/appointment/component/reports-modal";
 
 
 const AppointmentsForPatient = () => {
@@ -30,10 +31,11 @@ const AppointmentsForPatient = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loader, setLoader] = useState(false);
   const [appointments, setAppointments] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [status, setStatus] = useState("ALL");
   const [selectedDates, setSelectedDates] = useState([
-    moment(new Date()).subtract(7, "days").format("YYYY/MM/DD"),
-    moment(new Date()).format("YYYY/MM/DD"),
+    moment(new Date()).subtract(1, "month").format("YYYY/MM/DD"),
+    moment(new Date()).add(1, "month").format("YYYY/MM/DD"),
   ]);
   const [liveDate, setLiveDate] = useState(null);
   const [isAssignModal, setIsAssignModal] = useState(false);
@@ -100,6 +102,7 @@ const getMyAppointments = async (startDate,endDate, sts) => {
                       { key: "PENDING", text: "PENDING", value: "PENDING" },
                       { key: "ACTIVE", text: "ACCEPTED", value: "ACTIVE" },
                       { key: "REJECTED", text: "REJECTED", value: "REJECTED" },
+                      { key: "COMPLETED", text: "COMPLETED", value: "COMPLETED" },
                     ]}
                     selectOnBlur={false}
                   />
@@ -176,43 +179,17 @@ const getMyAppointments = async (startDate,endDate, sts) => {
                       </p>
                     ),
                   },
-
-                  // {
-                  //   name: "Reports",
-                  //   selector: (row) => row[""],
-                  //   sortable: false,
-                  //   minWidth: "80px",
-                  //   cell: (row) => (
-                  //     <div className={"mid-center"}>
-                  //       <div
-                  //         onClick={() => {
-                  //           setIsOpen(true);
-                  //           setOrder(row);
-                  //           setPackages(null);
-                  //         }}
-                  //       >
-                  //         <Eye size={25} color={"#365DE8"} />
-                  //       </div>
-                  //       {row.packageDetails &&
-                  //         row.packageDetails.length > 0 && (
-                  //           <div
-                  //             onClick={() => {
-                  //               setIsOpen(true);
-                  //               setOrder(row);
-                  //               setPackages(row.packageDetails);
-                  //             }}
-                  //           >
-                  //             <Box
-                  //               style={{ marginLeft: "10px" }}
-                  //               size={25}
-                  //               color={"#365DE8"}
-                  //             />
-                  //           </div>
-                  //         )}
-                  //     </div>
-                  //   ),
-                  // },
-
+                  {
+                    name: "NOTE",
+                    selector: (row) => row["remark"],
+                    sortable: false,
+                    minWidth: "100px",
+                    cell: (row) => (
+                      <p className="text-bold-500 mb-0">
+                        {row.remark ?? "N/A"}
+                      </p>
+                    ),
+                  },
                   {
                     name: "PAYMENT SLIP",
                     selector: (row) => row[""],
@@ -260,13 +237,31 @@ const getMyAppointments = async (startDate,endDate, sts) => {
                     ),
                   },
                   {
+                    name: "REPORT",
+                    selector: (row) => row[""],
+                    sortable: false,
+                    minWidth: "100px",
+                    cell: (row) => (
+                      <div>
+                        { row.status === "COMPLETED" ?  <div
+                          onClick={()=> {
+                            setIsOpen(true);
+                            setSelectedAppointment(row);
+                          }}
+                        >
+                          <CheckSquare size={27} color={"#1e9300"} />
+                        </div> : 'N/A'}
+                      </div>
+                    ),
+                  },
+                  {
                     name: "STATUS",
                     selector: (row) => row["status"],
                     minWidth: "150px",
                     sortable: false,
                     cell: (row) => (
                       <p className="text-bold-500 text-truncate mb-0">
-                        {row.status}
+                        {row.status === "ACTIVE" ? "ACCEPTED" : row.status}
                       </p>
                     ),
                   },
@@ -291,27 +286,29 @@ const getMyAppointments = async (startDate,endDate, sts) => {
       </Row>
 
       <Modal
-        size={'lg'}
+        size={selectedAppointment ? 'md' : 'lg'}
         isOpen={isOpen || isAssignModal}
       >
         <ModalHeader
           toggle={() => {
             setIsOpen(false);
             setIsAssignModal(false);
+            setSelectedAppointment(null)
           }}
           className={"selector-wrapper font-medium-2 inline-flex"}
         >
-          {`Create New Appointment`}
+          { selectedAppointment ? "View Report" : `Create New Appointment`}
         </ModalHeader>
         <ModalBody className="modal-dialog-centered">
 
-          {/*<OrderManage*/}
-          {/*  packages={packages ?? false}*/}
-          {/*  data={order}*/}
-          {/*  closeModal={() => setIsOpen(false)}*/}
-          {/*/>*/}
+          {selectedAppointment ?
+          <ReportsModal selectedData={selectedAppointment} patient closeModal={() => {setIsOpen(false)
+          setSelectedAppointment(null)
+          setIsAssignModal(false)}}/> :
+            <CreateAppointmentModal updateHandler={getMyAppointments} closeModal={() => {setIsAssignModal(false)}}/>
+          }
 
-          <CreateAppointmentModal updateHandler={getMyAppointments} closeModal={() => {setIsAssignModal(false)}}/>
+
 
         </ModalBody>
         <ModalFooter></ModalFooter>

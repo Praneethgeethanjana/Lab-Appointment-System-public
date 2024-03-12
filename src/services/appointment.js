@@ -33,3 +33,22 @@ export async function updateAppointmentStatus(id,status) {
   apiObject.endpoint = `admin/appointment/status?appointmentId=${id}&status=${status}`;
   return await ApiService.callApi(apiObject);
 }
+
+export async function uploadReport(id,obj) {
+  const apiObject = {};
+  apiObject.method = "POST";
+  apiObject.authentication = true;
+  apiObject.endpoint = `admin/appointment/${id}/report`;
+  apiObject.body = obj;
+  apiObject.multipart = true;
+  return await ApiService.callApi(apiObject);
+}
+
+export async function getReportForAdmin(id,patient) {
+  const url = patient ? `user/appointment/${id}/report` : `admin/appointment/${id}/report`
+  const apiObject = {};
+  apiObject.method = "GET";
+  apiObject.authentication = true;
+  apiObject.endpoint = url;
+  return await ApiService.callApi(apiObject);
+}

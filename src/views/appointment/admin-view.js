@@ -23,12 +23,15 @@ import { Box, Eye, File, Plus } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import CreateAppointmentModal from "@src/views/appointment/component/create-appointment-modal";
 import { getAppointmentForAdmin, getAppointmentForPatient, updateAppointmentStatus } from "@src/services/appointment";
+import ReportsModal from "@src/views/appointment/component/reports-modal";
 
 
 const AppointmentsForAdmin = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [status, setStatus] = useState("ALL");
   const [keyword, setKeyword] = useState("");
   const [selectedDates, setSelectedDates] = useState([
@@ -57,7 +60,7 @@ const AppointmentsForAdmin = () => {
   }
 
   const statusChangeHandler = (id,action) => {
-    errorSweetAlert("Are you sure?","",action === "ACTIVE" ? "Accept" : "Yes,Reject",()=> {
+    errorSweetAlert("Are you sure?","",action === "ACTIVE" ? "Accept" : action === "COMPLETED" ? "Yes, Complete" : "Yes,Reject",()=> {
       updateAppointmentStatus(id,action).then((res)=> {
         if(res.success){
           notifyMessage(res.message,1)
@@ -69,6 +72,13 @@ const AppointmentsForAdmin = () => {
     },true)
   }
 
+  const changeStatusForReportCompleted = async (id) => {
+    await updateAppointmentStatus(id,"COMPLETED").then((res)=> {
+      if(res.success){
+      } else {
+      }
+    }).finally(()=> { getMyAppointments()})
+  }
 
   return (
     <div>
@@ -106,6 +116,7 @@ const AppointmentsForAdmin = () => {
                       { key: "PENDING", text: "PENDING", value: "PENDING" },
                       { key: "ACTIVE", text: "ACCEPTED", value: "ACTIVE" },
                       { key: "REJECTED", text: "REJECTED", value: "REJECTED" },
+                      { key: "COMPLETED", text: "COMPLETED", value: "COMPLETED" },
                     ]}
                     selectOnBlur={false}
                   />
@@ -282,7 +293,16 @@ const AppointmentsForAdmin = () => {
                       {row.status === "PENDING" ?   <div className={"d-flex"}>
                         <button style={{marginRight:'5px'}} className="btn  btn-success" onClick={()=> {statusChangeHandler(row.id,'ACTIVE')}}>Accept</button>
                         <button className="btn btn-danger" onClick={()=> {statusChangeHandler(row.id,'REJECTED')}}>Reject</button>
-                      </div> : row.status === "ACTIVE" ? <button className="btn btn-warning">Upload Report</button> : row.status === "COMPLETED" ? <button className="btn btn-primary">View Report</button> : 'N/A'}
+                      </div> : row.status === "ACTIVE" ? <button
+                        onClick={()=> {
+                        setIsOpen(true);
+                        setSelectedAppointment(row);
+                        console.log("SELECTED",row)
+                      }} className="btn btn-warning">Upload Report</button> : row.status === "COMPLETED" ? <button   onClick={()=> {
+                        setIsOpen(true);
+                        setSelectedAppointment(row);
+                        console.log("SELECTED",row)
+                      }} className="btn btn-primary">View Report</button> : 'N/A'}
                     </div>
                     ),
                   },
@@ -293,6 +313,29 @@ const AppointmentsForAdmin = () => {
           </Col>
         )}
       </Row>
+
+      <Modal
+        size={'md'}
+        isOpen={isOpen}
+      >
+        <ModalHeader
+          toggle={() => {
+            setIsOpen(false);
+          }}
+          className={"selector-wrapper font-medium-2 inline-flex"}
+        >
+          {`Reports`}
+        </ModalHeader>
+        <ModalBody className="modal-dialog-centered">
+
+          <ReportsModal selectedData={selectedAppointment} updateHandler={changeStatusForReportCompleted} closeModal={() => {
+            setIsOpen(false)
+            setSelectedAppointment(null);
+          }}/>
+
+        </ModalBody>
+        <ModalFooter></ModalFooter>
+      </Modal>
 
     </div>
   );

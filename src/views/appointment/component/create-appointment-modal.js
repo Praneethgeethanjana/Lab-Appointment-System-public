@@ -12,7 +12,7 @@ import Loader from "@components/spinner/Loader";
 const DriverManage = ({  closeModal, updateHandler }) => {
   const [data, setData] = useState({});
   const [tests, setTests] = useState([]);
-  const [selectedTests, setSelectedTests] = useState([]);
+  const [selectedTests, setSelectedTests] = useState('');
   const [loading, setLoading] = useState(false);
   const [apiLoader, setApiLoader] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
@@ -62,10 +62,10 @@ const DriverManage = ({  closeModal, updateHandler }) => {
 
 
     setLoading(true)
-    const resultSelectedTests = selectedTests.join(',');
+
 
     const formData = new FormData();
-    formData.append("testIdList",resultSelectedTests)
+    formData.append("testIdList",selectedTests)
     formData.append("appointmentDate",selectedDate[0])
     formData.append("paymentSlipUrl",selectedPaymentSlip)
    if(selectedReceipt) formData.append("doctorReceiptUrl",selectedReceipt)
@@ -112,7 +112,6 @@ const DriverManage = ({  closeModal, updateHandler }) => {
                 className={"multi-dropdown"}
                 fluid
                 selection
-                multiple
                 search={false}
                 onChange={(e, { value }) => {
                   console.log('test value',value)

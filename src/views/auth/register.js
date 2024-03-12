@@ -38,7 +38,7 @@ const Register = () => {
   const source = skin === "dark" ? coverImage : coverImage;
 
 
-  const registerHandler = (e) => {
+  const registerHandler =  async (e) => {
     e.preventDefault();
     const data = {
       firstName: e.target[0].value ?? "",
@@ -48,16 +48,18 @@ const Register = () => {
       address : e.target[4].value ?? "",
       dob : e.target[5].value ?? "",
       bloodGroup : e.target[6].value ?? "",
-      password : e.target[7].value ?? "",
+      mobile: e.target[7].value ?? "",
+      password : e.target[8].value ?? "",
     };
     if(data.firstName.trim() === "") return notifyMessage("First Name cannot be empty!",3)
     if(data.lastName.trim() === "") return notifyMessage("Last Name cannot be empty!",3)
     if(data.userName.trim() === "") return notifyMessage("Email cannot be empty!",3)
+    if(data.address.trim() === "") return notifyMessage("Address cannot be empty!",3)
     if(data.dob.trim() === "") return notifyMessage("Date of Birth cannot be empty!",3)
     if(data.password.trim() === "") return notifyMessage("Password cannot be empty!",3)
 
 
-    userRegister(data).then((res) => {
+    await userRegister(data).then((res) => {
       if(res){
         console.log(res);
         if(res.success){
