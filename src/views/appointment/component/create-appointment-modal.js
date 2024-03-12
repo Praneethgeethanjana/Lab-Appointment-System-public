@@ -73,7 +73,7 @@ const DriverManage = ({  closeModal, updateHandler }) => {
 
 
 
-   await createAppointment(formData).then((res) => {
+   await  createAppointment(formData).then((res) => {
       if(res.success) {
         notifyMessage(res.message,1)
         if(updateHandler) updateHandler();

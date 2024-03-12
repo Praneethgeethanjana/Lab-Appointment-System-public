@@ -126,7 +126,7 @@ const ReportsModal = ({  closeModal, updateHandler , selectedData , patient}) =>
               <Col md={12}>
                 <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
                  <div className="mb-1">
-                    <h6 style={{cursor:'pointer',color:'#31c506'}} onClick={()=> {downloadReport(selectedData?.appointmentDetails[0].medicalTest.testName ?? 'Report.pdf',reportUrl)}}>Download Report</h6>
+                    <h6 style={{cursor:'pointer',color:'#ccc'}} onClick={()=> {downloadReport(selectedData?.appointmentDetails[0].medicalTest.testName ?? 'Report.pdf',reportUrl)}}>Download Report</h6>
                   </div>
 
                 </div>
