@@ -181,17 +181,6 @@ const getMyAppointments = async (startDate,endDate, sts) => {
                     ),
                   },
                   {
-                    name: "NOTE",
-                    selector: (row) => row["remark"],
-                    sortable: false,
-                    minWidth: "100px",
-                    cell: (row) => (
-                      <p className="text-bold-500 mb-0">
-                        {row.remark ?? "N/A"}
-                      </p>
-                    ),
-                  },
-                  {
                     name: "PAYMENT SLIP",
                     selector: (row) => row[""],
                     sortable: false,

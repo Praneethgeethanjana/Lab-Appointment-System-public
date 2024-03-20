@@ -20,6 +20,7 @@ const DriverManage = ({  closeModal, updateHandler }) => {
   const [note, setNote] = useState('');
   const [selectedDate, setSelectedDate] = useState([moment(new Date()).format("YYYY/MM/DD"),]);
   const [liveDate, setLiveDate] = useState(null);
+  const [time, setTime] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -52,21 +53,21 @@ const DriverManage = ({  closeModal, updateHandler }) => {
 
 
   const manageHandler = async () => {
-
     if (selectedTests.length === 0)
       return notifyMessage("Please select test type", 0);
     if ((selectedDate == "" )|| (selectedDate === null))
-      return notifyMessage("Preferred date can not be empty", 0);
+      return notifyMessage("Please select a preferred date", 0);
+    if ((time == "" )|| (time === null))
+      return notifyMessage("Please select a preferred time", 0);
     if (selectedPaymentSlip === null)
       return notifyMessage("Please upload payment slip", 0);
-
-
     setLoading(true)
 
 
+    const dateTime = `${selectedDate[0]} ${time}`
     const formData = new FormData();
     formData.append("testIdList",selectedTests)
-    formData.append("appointmentDate",selectedDate[0])
+    formData.append("appointmentDate",dateTime)
     formData.append("paymentSlipUrl",selectedPaymentSlip)
    if(selectedReceipt) formData.append("doctorReceiptUrl",selectedReceipt)
     formData.append("remark",note)
@@ -95,6 +96,11 @@ const DriverManage = ({  closeModal, updateHandler }) => {
       setSelectedReceipt(file);
     }
   };
+
+  const handleTimeInputChange = (event) => {
+    setTime(event.target.value);
+  };
+
 
 
 
@@ -143,6 +149,28 @@ const DriverManage = ({  closeModal, updateHandler }) => {
               />
             </div>
           </Col>
+
+
+          <Col md={4}>
+            <div className={"text-wrapper tile-wrapper mt-1"}>
+              <Label className={"required font-small-4"}>Preferred Time</Label>
+
+              <div>
+                <label>Choose Time : </label>
+                <input
+                  className="time-input"
+                  type="time"
+                  value={time}
+                  onChange={handleTimeInputChange}
+                  step="1"
+                />
+                {/*<p>Selected Time: {time}</p>*/}
+              </div>
+
+            </div>
+          </Col>
+
+
           <Col md={4}>
             <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
               <Label className={"required font-small-4"}>Payment Slip</Label>
@@ -153,7 +181,7 @@ const DriverManage = ({  closeModal, updateHandler }) => {
           <Col md={4}>
             {/*{!loading && (*/}
             <div className={"text-wrapper mb-1 mt-1 tile-wrapper"}>
-              <Label className={" font-small-4"}>Doctor Receipt</Label>
+              <Label className={" font-small-4"}>Doctor Receipt (Optional)</Label>
               <Input type="file" onChange={handleFileChange} />
             </div>
             {/*)}*/}
